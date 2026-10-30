@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sport & Well-being · TUM Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ---------------------------------------------------------------
+     You don't need to change anything here.
+     All texts, links, course times and study IDs are in
+     "STUDY SETTINGS" near the bottom of this file.
+     --------------------------------------------------------------- */
+  :root {
+    --navy: #0b1f3a;
+    --blue: #3070b3;
+    --sky: #64a0dc;
+    --lime: #c8f04b;
+    --coral: #ff7a59;
+    --ink: #13202f;
+    --muted: #5d6b7a;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --line: #e3e8ee;
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif; line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: "Outfit", sans-serif; line-height: 1.1; margin: 0; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* Top bar */
+  .top {
+    position: absolute; inset: 0 0 auto 0; z-index: 5;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 16px; color: #fff; text-decoration: none; }
+  .logo {
+    background: #fff; color: var(--blue); font-family: "Outfit", sans-serif;
+    font-weight: 800; font-size: 22px; padding: 4px 12px; border-radius: 6px;
+  }
+  .unit { font-size: 13px; line-height: 1.35; opacity: .92; }
+  .unit strong { display: block; font-weight: 600; }
+  .toggle {
+    display: flex; background: rgba(255,255,255,.12); border-radius: 999px; padding: 4px;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .toggle button {
+    border: 0; background: transparent; color: #fff; font: 600 13px "Inter", sans-serif;
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  }
+  .toggle button.on { background: var(--lime); color: var(--navy); }
+
+  /* Hero */
+  .hero {
+    position: relative; overflow: hidden; color: #fff;
+    background: radial-gradient(1200px 600px at 85% 10%, #1e4f8f 0%, transparent 60%),
+                linear-gradient(160deg, var(--navy) 0%, #12345f 100%);
+    padding: 150px 0 120px;
+  }
+  .hero .wrap { position: relative; z-index: 2; }
+  .eyebrow {
+    display: inline-block; background: rgba(200,240,75,.15); color: var(--lime);
+    font-weight: 600; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(200,240,75,.35);
+  }
+  .hero h1 { font-size: clamp(44px, 8vw, 88px); font-weight: 800; margin: 22px 0 14px; letter-spacing: -1px; }
+  .hero h1 em { font-style: normal; color: var(--lime); }
+  .hero p.lead { font-size: clamp(17px, 2.2vw, 20px); max-width: 600px; opacity: .9; margin: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 36px; }
+  .chip {
+    display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    padding: 9px 16px; border-radius: 999px;
+  }
+  .chip svg { width: 18px; height: 18px; stroke: var(--lime); }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    background: var(--lime); color: var(--navy); font-weight: 700; font-size: 17px;
+    padding: 16px 30px; border-radius: 999px; transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 10px 30px rgba(200,240,75,.25);
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(200,240,75,.35); }
+
+  /* Decorative moving shapes */
+  .shape { position: absolute; border-radius: 50%; filter: blur(2px); z-index: 1; }
+  .s1 { width: 340px; height: 340px; right: -80px; top: 90px; border: 46px solid rgba(100,160,220,.25); animation: float 9s ease-in-out infinite; }
+  .s2 { width: 120px; height: 120px; right: 260px; bottom: 60px; background: rgba(255,122,89,.85); animation: float 7s ease-in-out infinite reverse; }
+  .s3 { width: 60px; height: 60px; right: 120px; top: 120px; background: var(--lime); animation: float 6s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+  .wave { position: absolute; bottom: -1px; left: 0; width: 100%; height: 70px; z-index: 2; }
+
+  /* Steps */
+  .join { padding: 80px 0 40px; }
+  .section-title { text-align: center; margin-bottom: 44px; }
+  .section-title h2 { font-size: clamp(30px, 4.5vw, 44px); font-weight: 800; }
+  .section-title p { color: var(--muted); margin: 10px 0 0; font-size: 17px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .step {
+    background: var(--card); border-radius: var(--radius); padding: 30px 28px 32px;
+    box-shadow: 0 1px 2px rgba(16,32,48,.04), 0 12px 32px rgba(16,32,48,.06);
+    border: 1px solid var(--line); position: relative; transition: transform .2s;
+  }
+  .step:hover { transform: translateY(-4px); }
+  .badge {
+    width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+    font: 800 22px "Outfit", sans-serif; margin-bottom: 18px;
+  }
+  .b1 { background: #e8f1fb; color: var(--blue); }
+  .b2 { background: #fff0eb; color: var(--coral); }
+  .b3 { background: #f2fbd9; color: #5c7a00; }
+  .step h3 { font-size: 23px; font-weight: 700; margin-bottom: 8px; }
+  .step > p { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
+  .store {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    background: var(--navy); color: #fff; padding: 12px 16px; border-radius: 14px;
+    margin-top: 10px; font-weight: 600; font-size: 15px; transition: background .2s;
+  }
+  .store:hover { background: var(--blue); }
+  .store svg { width: 22px; height: 22px; fill: #fff; flex: none; }
+  .store small { display: block; font-weight: 400; font-size: 11px; opacity: .75; line-height: 1.2; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 7px; }
+  select {
+    width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 12px;
+    font: 500 15px "Inter", sans-serif; background: var(--bg); color: var(--ink); cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235d6b7a' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  select:focus { outline: none; border-color: var(--blue); }
+  .qrbox {
+    margin: 4px auto 0; width: 210px; height: 210px; border-radius: 18px;
+    border: 2px dashed #c9d3dd; display: grid; place-items: center; text-align: center;
+    color: var(--muted); font-size: 14px; padding: 14px; background: var(--bg);
+  }
+  .qrbox.ready { border: 2px solid var(--lime); background: #fff; }
+  .qrbox img, .qrbox canvas { max-width: 100%; }
+  .idrow { display: flex; gap: 8px; margin-top: 16px; }
+  .idrow input {
+    flex: 1; min-width: 0; padding: 12px; border: 1.5px solid var(--line); border-radius: 12px;
+    font: 500 14px "Inter", sans-serif; background: var(--bg);
+  }
+  .idrow button {
+    border: 0; background: var(--blue); color: #fff; padding: 0 18px; border-radius: 12px;
+    font: 600 14px "Inter", sans-serif; cursor: pointer;
+  }
+  .idrow button:hover { background: var(--navy); }
+  .note { font-size: 13px; color: #5c7a00; text-align: center; min-height: 20px; margin-top: 8px; }
+
+  /* Contact */
+  .contact { padding: 50px 0 70px; }
+  .contact-card {
+    background: var(--navy); color: #fff; border-radius: 28px; padding: 44px;
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 36px; align-items: center;
+  }
+  .contact-card h2 { font-size: 34px; font-weight: 800; }
+  .contact-card > div > p { opacity: .8; margin: 10px 0 0; }
+  .people { display: grid; gap: 14px; }
+  .person {
+    display: flex; align-items: center; gap: 16px; text-decoration: none;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+    padding: 16px 18px; border-radius: 18px; transition: background .2s;
+  }
+  .person:hover { background: rgba(255,255,255,.13); }
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    background: var(--lime); color: var(--navy); font: 700 17px "Outfit", sans-serif;
+  }
+  .person strong { display: block; font-weight: 600; }
+  .person span { font-size: 14px; color: var(--sky); word-break: break-all; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 0 40px; }
+  footer a { color: var(--blue); }
+
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr; }
+    .contact-card { grid-template-columns: 1fr; padding: 32px 24px; }
+    .s1 { width: 220px; height: 220px; border-width: 30px; right: -90px; }
+    .s2, .s3 { display: none; }
+    .unit { display: none; }
+    .hero { padding: 120px 0 100px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap top">
+    <div class="brand">
+      <div class="logo">TUM</div>
+      <div class="unit">
+        <strong id="unitName"></strong>
+        <span id="unitSub"></span>
+      </div>
+    </div>
+    <div class="toggle" role="group" aria-label="Language">
+      <button data-lang="en" class="on">EN</button>
+      <button data-lang="de">DE</button>
+    </div>
+  </div>
+
+  <div class="shape s1"></div><div class="shape s2"></div><div class="shape s3"></div>
+
+  <div class="wrap">
+    <span class="eyebrow" data-t="eyebrow"></span>
+    <h1 data-t="title" data-html></h1>
+    <p class="lead" data-t="lead"></p>
+    <div class="chips">
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg><span data-t="chip1"></span></span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-t="chip2"></span></span>
+      <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-8-8"/><path d="M20 4l-8 8"/></svg><span data-t="chip3"></span></span>
+    </div>
+    <a href="#join" class="cta"><span data-t="cta"></span> <span aria-hidden="true">↓</span></a>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 40 C 360 90, 720 0, 1080 30 S 1440 50, 1440 50 V70 H0Z" fill="#f5f7fa"/></svg>
+</section>
+
+<section class="join" id="join">
+  <div class="wrap">
+    <div class="section-title">
+      <h2 data-t="howTitle"></h2>
+      <p data-t="howSub"></p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="badge b1">1</div>
+        <h3 data-t="s1Title"></h3>
+        <p data-t="s1Text"></p>
+        <a class="store" id="appStore" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.8-1.7 0-3.3 1-4.1 2.5-1.8 3.1-.5 7.6 1.3 10.1.8 1.2 1.8 2.6 3.1 2.5 1.3 0 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.8s-2.7-1.1-2.7-4.1zM14 5.2c.7-.8 1.2-2 1-3.2-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3.1 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+          <span><small data-t="appleSmall"></small>App Store</span>
+        </a>
+        <a class="store" id="playStore" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M3.6 2.2c-.3.3-.4.7-.4 1.2v17.2c0 .5.1.9.4 1.2l9.6-9.8-9.6-9.8zm10.7 10.9l2.8 2.8-11.4 6.5 8.6-9.3zm0-2.2L5.7 1.6l11.4 6.5-2.8 2.8zm6.4 1.1c0 .6-.3 1.1-.9 1.4l-2.6 1.5-3-3 3-3 2.6 1.5c.6.3.9.9.9 1.6z"/></svg>
+          <span><small data-t="googleSmall"></small>Google Play</span>
+        </a>
+      </div>
+
+      <div class="step">
+        <div class="badge b2">2</div>
+        <h3 data-t="s2Title"></h3>
+        <p data-t="s2Text"></p>
+        <label for="lang" data-t="langLabel"></label>
+        <select id="lang"></select>
+        <label for="course" data-t="courseLabel"></label>
+        <select id="course"></select>
+      </div>
+
+      <div class="step">
+        <div class="badge b3">3</div>
+        <h3 data-t="s3Title"></h3>
+        <p data-t="s3Text"></p>
+        <div class="qrbox" id="qr"></div>
+        <div class="idrow">
+          <input id="studyId" readonly>
+          <button id="copy" type="button" data-t="copy"></button>
+        </div>
+        <div class="note" id="copied"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <div>
+        <h2 data-t="contactTitle"></h2>
+        <p data-t="contactText"></p>
+      </div>
+      <div class="people" id="people"></div>
+    </div>
+  </div>
+</section>
+
+<footer>Powered by <a href="https://momentumresearch.eu/" target="_blank" rel="noopener">momenTUM</a> · Technical University of Munich</footer>
+
+<script>
+/* =====================================================================
+   STUDY SETTINGS  ·  THIS IS THE ONLY PART YOU NEED TO EDIT
+   Change the text between the quotation marks "like this".
+   Keep the quotation marks and the commas at the end of each line.
+   ===================================================================== */
+const STUDY = {
+
+  unitName: "TUM School of Medicine and Health",
+  unitSub:  "Sport Psychology",
+
+  appStoreLink:  "https://apps.apple.com/de/app/tum-momentum/id6444047291?l=en-GB",
+  playStoreLink: "https://play.google.com/store/apps/details?id=de.tum.sg.momentum.android",
+
+  // Study languages (first drop-down)
+  languages: { en: "English", de: "Deutsch" },
+
+  // Course end times (second drop-down)
+  courses: {
+    c1730: "Ends 17:30",
+    c1930: "Ends 19:30",
+    c2000: "Ends 20:00"
+  },
+
+  // Paste the momenTUM study ID (or study link) for each combination.
+  // The QR code is made automatically from it.
+  studyIds: {
+    "en-c1730": "",
+    "en-c1930": "",
+    "en-c2000": "",
+    "de-c1730": "",
+    "de-c1930": "",
+    "de-c2000": ""
+  },
+
+  // Contact people (add or remove lines as needed)
+  contacts: [
+    { name: "Prof. Dr. Felix Ehrlenspiel", email: "felix.ehrlenspiel@tum.de" },
+    { name: "Mamoona Anees",               email: "mamoona.anees@tum.de" }
+  ],
+
+  // All page texts, in English and German.
+  // Words between <em> and </em> in the title are shown in green.
+  text: {
+    en: {
+      eyebrow:     "TUM research study",
+      title:       "Sport &amp; <em>well-being</em>",
+      lead:        "How do you feel before and after your sports class? Help us find out with a few quick check-ins on your phone.",
+      chip1:       "Smartphone study",
+      chip2:       "7 short check-ins",
+      chip3:       "Around your sports class",
+      cta:         "Join the study",
+      howTitle:    "Join in 3 easy steps",
+      howSub:      "It only takes a couple of minutes to get set up.",
+      s1Title:     "Get the app",
+      s1Text:      "Install the free momenTUM app on your phone.",
+      appleSmall:  "Download on the",
+      googleSmall: "Get it on",
+      s2Title:     "Pick your options",
+      s2Text:      "Choose your study language and when your sports course ends.",
+      langLabel:   "Study language",
+      courseLabel: "Course end time",
+      choose:      "Choose…",
+      s3Title:     "Scan & join",
+      s3Text:      "Open momenTUM and scan the QR code, or copy the study ID into the app.",
+      qrWaiting:   "Complete step 2 to see your QR code",
+      qrMissing:   "QR code coming soon",
+      idPlaceholder: "Your study ID",
+      copy:        "Copy",
+      copied:      "Copied! Now paste it into the app.",
+      contactTitle: "Questions?",
+      contactText:  "We're happy to help. Just send us an email."
+    },
+    de: {
+      eyebrow:     "TUM-Forschungsstudie",
+      title:       "Sport &amp; <em>Wohlbefinden</em>",
+      lead:        "Wie fühlst du dich vor und nach deinem Sportkurs? Hilf uns, es herauszufinden, mit ein paar kurzen Abfragen auf deinem Smartphone.",
+      chip1:       "Smartphone-Studie",
+      chip2:       "7 kurze Abfragen",
+      chip3:       "Rund um deinen Sportkurs",
+      cta:         "Jetzt teilnehmen",
+      howTitle:    "In 3 einfachen Schritten dabei",
+      howSub:      "Die Einrichtung dauert nur ein paar Minuten.",
+      s1Title:     "App holen",
+      s1Text:      "Installiere die kostenlose momenTUM-App auf deinem Smartphone.",
+      appleSmall:  "Laden im",
+      googleSmall: "Jetzt bei",
+      s2Title:     "Optionen wählen",
+      s2Text:      "Wähle deine Studiensprache und wann dein Sportkurs endet.",
+      langLabel:   "Studiensprache",
+      courseLabel: "Kursende",
+      choose:      "Auswählen…",
+      s3Title:     "Scannen & starten",
+      s3Text:      "Öffne momenTUM und scanne den QR-Code oder kopiere die Studien-ID in die App.",
+      qrWaiting:   "Schließe Schritt 2 ab, um deinen QR-Code zu sehen",
+      qrMissing:   "QR-Code folgt in Kürze",
+      idPlaceholder: "Deine Studien-ID",
+      copy:        "Kopieren",
+      copied:      "Kopiert! Jetzt in die App einfügen.",
+      contactTitle: "Fragen?",
+      contactText:  "Wir helfen gerne. Schreib uns einfach eine E-Mail."
+    }
+  }
+};
+/* ======================= END OF STUDY SETTINGS ======================= */
+
+const $ = id => document.getElementById(id);
+let pageLang = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+try { pageLang = localStorage.getItem("pageLang") || pageLang; } catch (e) {}
+
+$("unitName").textContent = STUDY.unitName;
+$("unitSub").textContent = STUDY.unitSub;
+$("appStore").href = STUDY.appStoreLink;
+$("playStore").href = STUDY.playStoreLink;
+
+$("people").innerHTML = STUDY.contacts.map(c => {
+  const initials = c.name.replace(/(Prof\.|Dr\.)/g, "").trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("");
+  return '<a class="person" href="mailto:' + c.email + '"><div class="avatar">' + initials +
+         '</div><div><strong>' + c.name + '</strong><span>' + c.email + '</span></div></a>';
+}).join("");
+
+function fill(select, items, chooseText) {
+  const keep = select.value;
+  select.innerHTML = '<option value="">' + chooseText + '</option>';
+  for (const [value, text] of Object.entries(items)) {
+    const o = document.createElement("option");
+    o.value = value; o.textContent = text;
+    select.appendChild(o);
+  }
+  select.value = keep;
+}
+
+function setLang(lang) {
+  pageLang = lang;
+  try { localStorage.setItem("pageLang", lang); } catch (e) {}
+  const t = STUDY.text[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    const v = t[el.dataset.t] || "";
+    if (el.hasAttribute("data-html")) el.innerHTML = v; else el.textContent = v;
+  });
+  document.querySelectorAll(".toggle button").forEach(b => b.classList.toggle("on", b.dataset.lang === lang));
+  fill($("lang"), STUDY.languages, t.choose);
+  fill($("course"), STUDY.courses, t.choose);
+  $("studyId").placeholder = t.idPlaceholder;
+  update();
+}
+
+function update() {
+  const t = STUDY.text[pageLang];
+  const lang = $("lang").value, course = $("course").value, qr = $("qr");
+  qr.innerHTML = ""; qr.classList.remove("ready");
+  $("studyId").value = ""; $("copied").textContent = "";
+  if (!lang || !course) { qr.textContent = t.qrWaiting; return; }
+  const id = STUDY.studyIds[lang + "-" + course];
+  if (!id) { qr.textContent = t.qrMissing; return; }
+  $("studyId").value = id;
+  qr.classList.add("ready");
+  new QRCode(qr, { text: id, width: 176, height: 176, colorDark: "#0b1f3a" });
+}
+
+$("lang").addEventListener("change", update);
+$("course").addEventListener("change", update);
+document.querySelectorAll(".toggle button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+$("copy").addEventListener("click", async () => {
+  const v = $("studyId").value;
+  if (!v) return;
+  try { await navigator.clipboard.writeText(v); }
+  catch (e) { $("studyId").select(); document.execCommand("copy"); }
+  $("copied").textContent = STUDY.text[pageLang].copied;
+});
+
+setLang(pageLang);
+</script>
+</body>
+</html>
